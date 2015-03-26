@@ -2,7 +2,7 @@
 <xs:schema targetNamespace="http://domainmodel.pts-fsm.org/People" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://domainmodel.pts-fsm.org/People" xmlns="http://domainmodel.pts-fsm.org/People" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0" elementFormDefault="qualified" >
 
     <xs:include schemaLocation="../Common/OTA_CommonTypes.xsd"></xs:include>
-    <xs:include schemaLocation="../Common/OTA_CommonTypes.xsd"></xs:include>
+    
    
 
     <xs:complexType name="Customer">
