@@ -1,8 +1,9 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://domainmodel.pts-fsm.org/Booking" xmlns:tns="http://domainmodel.pts-fsm.org/Booking" elementFormDefault="qualified"  
-        xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0" >
-
+        xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0"
+        xmlns:ota="http://domainmodel.pts-fsm.org/OTA-FSM/Common" >
+   <import namespace="http://domainmodel.pts-fsm.org/OTA-FSM/Common" schemaLocation="../Common/OTA_FSM_CommonTypesProxy.xsd"></import>
+  
    <annotation>
       <documentation> FSM Structural Model - Booking, version 0.9, March 25 2015
                       Author: Riccardo Santoro, r.santoro@fsitaliane.it
@@ -40,10 +41,10 @@
 					</documentation>
 				</annotation>
 			</element>
-			<element name="bookingProvider" type="ID">
+			<element name="bookingProvider" type="ota:CompanyNameType">
 				<annotation>
 					<documentation>Mandatory identification of Rail Service Provider supplying the Products described in the referenced CarrierOffer(s) of the Booking.
-									*** TYPE to be replaced with RailServiceProvider class in FSM Roles package ***
+									
 				    </documentation>
 				</annotation>
 			</element>
@@ -63,12 +64,12 @@
 					</documentation>
 				</annotation>
 			</element>
-			<element name="expirationDate" type="dateTime" maxOccurs="1"
+			<element name="bookingTimeLimit" type="ota:OntologyTimeDurationType" maxOccurs="1"
 				minOccurs="1">
 				<annotation>
 					<documentation>
 						Mandatory expiration dateTime for a Booking in the PREBOOKED status. Booking is invalid, and can be destroyed, 
-						when this dateTime is exceeded. Ignored for a Booking in the FINALLYBOOKED or REVOKED or ERROR status
+						when this time limit is exceeded. Ignored for a Booking in the FINALLYBOOKED or REVOKED or ERROR status
 					</documentation>
 				</annotation>
 			</element>
@@ -89,10 +90,10 @@
         			</documentation>
         		</annotation>
         	</element>
-        	<element name="inventoryAllocationProvider" type="ID">
+        	<element name="inventoryAllocationProvider" type="ota:CompanyNameType">
         		<annotation>
         			<documentation>Mandatory identification of organization supplying the inventory controlled rresources.
-                                   *** TYPE to be replaced with class from FSM Roles package ***
+                                  
                     </documentation>
         		</annotation>
         	</element>
@@ -104,11 +105,11 @@
         			</documentation>
         		</annotation>
         	</element>
-        	<element name="expirationDate" type="dateTime" maxOccurs="1"
+        	<element name="inventoryAllocationValidity" type="ota:OntologyTimeDurationType" maxOccurs="1"
         		minOccurs="0">
         		<annotation>
         			<documentation>
-        				Optional expirationDate beyond which the  InventoryAllocation is not guaranteed to be available by the Rail Service Provider
+        				Optional expiration time limit beyond which the  InventoryAllocation is not guaranteed to be available by the Rail Service Provider
         			</documentation>
         		</annotation>
         	</element>
@@ -156,30 +157,19 @@
 		</restriction>
 	</simpleType>
 
-	<complexType name="Seat">
+	<complexType name="TrainOnBoardAcommodation">
         <annotation>
-        	<documentation>A type of InventoryAllocation describing a specific unit of the "Seat" inventory controlled resource
+        	<documentation>A type of InventoryAllocation describing a specific unit of Train On Board Facilities which are inventory controlled resource
+        	               Uses OTA AccommodationType for Train-specific inventory controller resources
 			</documentation>
         </annotation>
         <complexContent>
 			<extension base="tns:InventoryAllocation">
 				<sequence>
-					<element name="coachNumber" type="string" >
+					<element name="accommodation" type="ota:AccommodationType" >
 						<annotation>
 							<documentation>Identification of the rail coach</documentation>
-						</annotation></element>
-					<element name="seatNumber" type="string" >
-						<annotation>
-							<documentation>identification of the seat number
-							</documentation>
-						</annotation>
-					</element>
-					<element name="seatPosition" type="string" maxOccurs="1" minOccurs="0">
-						<annotation>
-							<documentation>Optional identification of the seat's position, e.g. "Window", "Aisle", etc.
-						    </documentation>
-						</annotation>
-					</element>
+						</annotation></element>
 				</sequence>
 			</extension>
 		</complexContent>
