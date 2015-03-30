@@ -1,13 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema targetNamespace="http://domainmodel.pts-fsm.org/People" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://domainmodel.pts-fsm.org/People" xmlns="http://domainmodel.pts-fsm.org/People" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0" elementFormDefault="qualified" >
+<xs:schema targetNamespace="http://domainmodel.pts-fsm.org/People" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:tns="http://domainmodel.pts-fsm.org/People" 
+           xmlns="http://domainmodel.pts-fsm.org/People" 
+           xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0" 
+           xmlns:ota="http://domainmodel.pts-fsm.org/OTA-FSM/Common" 
+              elementFormDefault="qualified" >
+              
+              
+   <xs:import namespace="http://domainmodel.pts-fsm.org/OTA-FSM/Common" schemaLocation="../Common/OTA_FSM_CommonTypesProxy.xsd"></xs:import>
 
-    <xs:include schemaLocation="../Common/OTA_CommonTypes.xsd"></xs:include>
     
-   
-
+    
     <xs:complexType name="Customer">
     	<xs:complexContent>
-    		<xs:extension base="CustomerType"></xs:extension>
+    		<xs:extension base="ota:CustomerType"></xs:extension>
     	</xs:complexContent>
     </xs:complexType>
+
+    <xs:complexType name="Passenger">
+    	<xs:complexContent>
+    		<xs:extension base="ota:RailPassengerCategoryType">
+    			<xs:sequence>
+    				<xs:element name="passengerDetails" type="ota:RailPassengerDetailType"></xs:element>
+    			</xs:sequence>
+    		</xs:extension>
+    	</xs:complexContent>
+
+    </xs:complexType>
+
+
 </xs:schema>
