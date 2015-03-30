@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://domainmodel.pts-fsm.org/Product" elementFormDefault="qualified" 
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+             xmlns:ota="http://domainmodel.pts-fsm.org/OTA-FSM/Common"
+             xmlns:tns="http://domainmodel.pts-fsm.org/Product">
+
+    
+    
+    <xsd:import namespace="http://domainmodel.pts-fsm.org/OTA-FSM/Common" schemaLocation="../Common/OTA_FSM_CommonTypesProxy.xsd"></xsd:import>
+    <xsd:complexType name="Product">
+    	<xsd:complexContent>
+    		<xsd:extension base="ota:ClassCodeType">
+    			<xsd:sequence>
+    				<xsd:element name="productName" type="xsd:string"></xsd:element>
+    				<xsd:element name="productProvider"
+    					type="ota:CompanyNameType">
+    				</xsd:element>
+    			</xsd:sequence>
+    		</xsd:extension>
+    	</xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="AncillaryService">
+    	<xsd:complexContent>
+    		<xsd:extension base="tns:Product">
+    			<xsd:sequence>
+    				<xsd:element name="boundToProduct" type="tns:Product"
+    					maxOccurs="unbounded" minOccurs="1">
+    				</xsd:element>
+    				<xsd:element name="otaCoding" type="ota:AncillaryServiceType"></xsd:element>
+    			</xsd:sequence>
+    		</xsd:extension>
+    	</xsd:complexContent>
+    </xsd:complexType>
+</xsd:schema>
