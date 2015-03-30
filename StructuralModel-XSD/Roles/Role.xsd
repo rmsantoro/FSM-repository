@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://domainmodel.pts-fsm.org/Role" 
+        xmlns:tns="http://domainmodel.pts-fsm.org/Role" elementFormDefault="qualified"
+        xmlns:ota="http://domainmodel.pts-fsm.org/OTA-FSM/Common" >
+        
+    
+    <xs:import namespace="http://domainmodel.pts-fsm.org/OTA-FSM/Common" schemaLocation="../Common/OTA_FSM_CommonTypesProxy.xsd"></xs:import>
+        
+        
+        
+
+    <xs:complexType name="MarketingCompany">
+    	<xs:simpleContent>
+    		<xs:extension base="ota:CompanyNameType"></xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+    
+    <xs:complexType name="RailServiceProvider">
+    	<xs:simpleContent>
+    		<xs:extension base="ota:CompanyNameType">
+    			 <xs:attributeGroup ref="ota:BookingChannelGroup"></xs:attributeGroup>
+    		</xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="Distributor">
+    	<xs:simpleContent>
+    		<xs:extension base="ota:CompanyNameType"></xs:extension>
+    	</xs:simpleContent>
+    </xs:complexType>
+    
+
+    
+</xs:schema>
