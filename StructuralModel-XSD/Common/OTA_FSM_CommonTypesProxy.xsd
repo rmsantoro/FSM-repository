@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://domainmodel.pts-fsm.org/OTA-FSM/Common"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://domainmodel.pts-fsm.org/OTA-FSM/Common" 
+        xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0" elementFormDefault="qualified">
+   
+      
+   <include schemaLocation="OTA_RailCommonTypes.xsd"></include>
+   
+   
+   
+</xs:schema>
