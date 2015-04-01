@@ -2,30 +2,35 @@
 <!-- edited with XMLSpy v2013 rel. 2 sp2 (x64) (http://www.altova.com) by ﻿AMADEUS s.a.s. (AMADEUS s.a.s.) -->
 <!-- Notice: This is NDC Draft Specification provided for pre-review by the members of the relevant governance groups, it is not provided for implementation in a production environment or considered to be the final  schema to support NDC business  requirements. The draft schema may, at any time up to final specification submission, undergo changes including, but not limited to, specific elements, element names/labels, annotations or message name as a result of the ongoing quality control process, and comments, which may be received following the pre-review. Implementation of this version is done so at the risk of the implementer or implementing company.
 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.iata.org/IATA/EDIST" xmlns:nc="http://www.iata.org/IATA/EDIST/common" xmlns:napp="http://www.iata.org/IATA/EDIST/application" xmlns:nsec="http://www.iata.org/IATA/EDIST/security" xmlns:noff="http://www.iata.org/IATA/EDIST/offer" xmlns:nsc="http://www.iata.org/IATA/EDIST/shopping" xmlns:s="http://www.iata.org/IATA/EDIST/structures" xmlns:nsrv="http://www.iata.org/IATA/EDIST/service" xmlns:nflt="http://www.iata.org/IATA/EDIST/flight" xmlns:nfar="http://www.iata.org/IATA/EDIST/fare" xmlns:nact="http://www.iata.org/IATA/EDIST/actors" xmlns:nmet="http://www.iata.org/IATA/EDIST/meta" xmlns:nlst="http://www.iata.org/IATA/EDIST/datalist" targetNamespace="http://www.iata.org/IATA/EDIST" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2014.2" id="NDC2014.2">
-	<xsd:import schemaLocation="file:///D:/My%20Document/Full%20Service%20Model/Creation%20XSDs%20AFR/OTA_CommonPrefs.xsd"/>
-	<xsd:import schemaLocation="file:///D:/My%20Document/Full%20Service%20Model/Creation%20XSDs%20AFR/OTA_CommonTypes.xsd"/>
-	<xsd:complexType name="Offer">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://domainmodel.pts-fsm.org/Offer" targetNamespace="http://domainmodel.pts-fsm.org/Offer">
+	<xsd:include schemaLocation="../Common/OTA_CommonPrefs.xsd"/>
+	<xsd:include schemaLocation="../Common/OTA_CommonTypes.xsd"/>
+	<xsd:complexType name="CarrierOffer">
 		<xsd:annotation>
-			<xsd:documentation>Description of an offer covering the whole journey provided to the RSP to be priced.</xsd:documentation>
+			<xsd:documentation>This element describes the Minimum Sellable Offer that can be presented to the distributor. </xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
 			<xsd:element name="Owner">
 				<xsd:annotation>
-					<xsd:documentation source="description" xml:lang="en">Carrier designator of the owner/ assigner of the Offer , typically used for offer ordering purposes.  Example: UA, BA
-
-Encoding Scheme (e.g. UIC) to be specified in the CodeContext attribute.</xsd:documentation>
+					<xsd:documentation source="description" xml:lang="en">Carrier responsable for the Offer.</xsd:documentation>
 				</xsd:annotation>
 				<xsd:complexType>
-					<xsd:attribute name="CodeContext" type="xsd:integer"/>
+					<xsd:sequence>
+						<xsd:element name="TermOfConveyance" type="xsd:string" minOccurs="0"/>
+					</xsd:sequence>
+					<xsd:attribute name="CodeContext" type="xsd:string"/>
+					<xsd:attribute name="Code" type="xsd:string" use="required"/>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="TimeLimits" minOccurs="0">
+			<xsd:element name="Fare">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="OfferExpiration" type="xsd:dateTime">
-							<xsd:annotation>
-								<xsd:documentation>Offer Expiration Time Limit value.
+						<xsd:element name="TimeLimit">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="OfferExpiration" type="xsd:dateTime">
+										<xsd:annotation>
+											<xsd:documentation>Offer Expiration Time Limit value.
 Examples: 2017-05-30T09:00:00,  2015-01-13T13:59:38Z
 
 Notes:
@@ -34,11 +39,11 @@ Notes:
 2. On expiry, a new shopping transaction is required.
 
 3. This time limit is at the OFFER-LEVEL and will apply to all (child) Offer Items.</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-						<xsd:element name="Payment" type="xsd:dateTime" minOccurs="0">
-							<xsd:annotation>
-								<xsd:documentation>Payment Time Limit value.
+										</xsd:annotation>
+									</xsd:element>
+									<xsd:element name="Payment" type="xsd:dateTime" minOccurs="0">
+										<xsd:annotation>
+											<xsd:documentation>Payment Time Limit value.
 Examples: 2017-05-30T09:00:00,  2015-01-13T13:59:38Z
 
 Notes:
@@ -47,189 +52,17 @@ Notes:
 2. Payment Time Limit and Ticket Time Limit may be the same in most cases; however, Payment Time Limit expands to include ticketless transactions and other accountable documents.
 
 3. This time limit is at the OFFER-LEVEL and will apply to all (child) Offer Items.</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="TotalPrice">
-				<xsd:annotation>
-					<xsd:documentation>Total Price including Tax, if any.</xsd:documentation>
-				</xsd:annotation>
-				<xsd:complexType>
-					<xsd:attribute name="Amount" type="xsd:positiveInteger" use="required"/>
-					<xsd:attribute name="Currency" type="xsd:string" use="required">
-						<xsd:annotation>
-							<xsd:documentation>ISO 4217</xsd:documentation>
-						</xsd:annotation>
-					</xsd:attribute>
-					<xsd:attribute name="DecimalPlaces" type="xsd:nonNegativeInteger" use="required">
-						<xsd:annotation>
-							<xsd:documentation>ISO 4217</xsd:documentation>
-						</xsd:annotation>
-					</xsd:attribute>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="AlternateCurrencies" minOccurs="0" maxOccurs="unbounded">
-				<xsd:complexType>
-					<xsd:attribute name="Currency" type="xsd:string" use="required">
-						<xsd:annotation>
-							<xsd:documentation>ISO 4217</xsd:documentation>
-						</xsd:annotation>
-					</xsd:attribute>
-					<xsd:attribute name="ConversionRate" type="xsd:string" use="required"/>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="FareList" minOccurs="0" maxOccurs="unbounded">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="Code" type="xsd:string"/>
-						<xsd:element name="Name">
-							<xsd:annotation>
-								<xsd:documentation>Commercial Name of the fare. E.g TGV PRO.</xsd:documentation>
-							</xsd:annotation>
-							<xsd:complexType>
-								<xsd:simpleContent>
-									<xsd:extension base="xsd:string">
-										<xsd:attribute name="Code" type="xsd:language">
-											<xsd:annotation>
-												<xsd:documentation>Language code in case several languages are supported.</xsd:documentation>
-											</xsd:annotation>
-										</xsd:attribute>
-									</xsd:extension>
-								</xsd:simpleContent>
-							</xsd:complexType>
-						</xsd:element>
-						<xsd:element name="Link" type="xsd:anyURI" minOccurs="0">
-							<xsd:annotation>
-								<xsd:documentation>Link to any web page (public) where more information about this fare can be found.</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-						<xsd:element name="Indicators">
-							<xsd:complexType>
-								<xsd:attribute name="NetFareIndicator" type="xsd:boolean"/>
-								<xsd:attribute name="Open" type="xsd:boolean"/>
-								<xsd:attribute name="ReservationRequired" type="xsd:boolean"/>
-								<xsd:attribute name="Family" type="xsd:nonNegativeInteger"/>
-							</xsd:complexType>
-						</xsd:element>
-						<xsd:element name="Flexibility">
-							<xsd:annotation>
-								<xsd:documentation>Flexibility of the fares. E.g. Exchangable and Refundable = 003, etc</xsd:documentation>
-							</xsd:annotation>
-							<xsd:complexType>
-								<xsd:attribute name="Code" type="xsd:nonNegativeInteger" use="required"/>
-								<xsd:attribute name="Description" type="xsd:string"/>
-							</xsd:complexType>
-						</xsd:element>
-						<xsd:element name="TableName" type="xsd:string" minOccurs="0">
-							<xsd:annotation>
-								<xsd:documentation>Link to any reference data where  more information about this fare can be found.</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-						<xsd:element name="PassengerLimits" minOccurs="0">
-							<xsd:complexType>
-								<xsd:attribute name="MinPassengers" type="xsd:string">
-									<xsd:annotation>
-										<xsd:documentation xml:lang="en">The minimum number of passengers for this ticket.</xsd:documentation>
-									</xsd:annotation>
-								</xsd:attribute>
-								<xsd:attribute name="MaxPassengers" type="xsd:string">
-									<xsd:annotation>
-										<xsd:documentation xml:lang="en">The maximum number of passengers for this ticket.</xsd:documentation>
-									</xsd:annotation>
-								</xsd:attribute>
-								<xsd:attribute name="MinAdults" type="xsd:string">
-									<xsd:annotation>
-										<xsd:documentation xml:lang="en">The minimum number of adults for this ticket.</xsd:documentation>
-									</xsd:annotation>
-								</xsd:attribute>
-								<xsd:attribute name="MaxAdults" type="xsd:string">
-									<xsd:annotation>
-										<xsd:documentation xml:lang="en">The maximum number of adults for this ticket.</xsd:documentation>
-									</xsd:annotation>
-								</xsd:attribute>
-								<xsd:attribute name="MinChildren" type="xsd:string">
-									<xsd:annotation>
-										<xsd:documentation xml:lang="en">The minimum number of children for this ticket.</xsd:documentation>
-									</xsd:annotation>
-								</xsd:attribute>
-								<xsd:attribute name="MaxChildren" type="xsd:string">
-									<xsd:annotation>
-										<xsd:documentation xml:lang="en">The maximum number of children for this ticket.</xsd:documentation>
-									</xsd:annotation>
-								</xsd:attribute>
-							</xsd:complexType>
-						</xsd:element>
-						<xsd:element name="TermsAndCoditions" minOccurs="0" maxOccurs="unbounded">
-							<xsd:complexType>
-								<xsd:simpleContent>
-									<xsd:extension base="xsd:string">
-										<xsd:attribute name="Code" type="xsd:language">
-											<xsd:annotation>
-												<xsd:documentation>Language code in case several languages are supported.</xsd:documentation>
-											</xsd:annotation>
-										</xsd:attribute>
-										<xsd:attribute name="Link" type="xsd:anyURI"/>
-									</xsd:extension>
-								</xsd:simpleContent>
-							</xsd:complexType>
-						</xsd:element>
-					</xsd:sequence>
-					<xsd:attribute name="ListKey" type="xsd:string" use="required"/>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="ServiceList" minOccurs="0" maxOccurs="unbounded">
-				<xsd:annotation>
-					<xsd:documentation>Description of the AncillaryServices</xsd:documentation>
-				</xsd:annotation>
-				<xsd:complexType>
-					<xsd:attribute name="ListKey" type="xsd:string" use="required"/>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="Accommodations" minOccurs="0" maxOccurs="unbounded">
-				<xsd:annotation>
-					<xsd:documentation>Description of the Accommodaitons</xsd:documentation>
-				</xsd:annotation>
-				<xsd:complexType>
-					<xsd:attribute name="ListKey" type="xsd:string" use="required"/>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="OfferDetail" maxOccurs="unbounded">
-				<xsd:annotation>
-					<xsd:documentation>Global offer breakdown into several offer derails. Each of these OfferDetail could be sold alone.</xsd:documentation>
-				</xsd:annotation>
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="Associations" minOccurs="0" maxOccurs="unbounded">
-							<xsd:complexType>
-								<xsd:sequence>
-									<xsd:element name="AssociatedSegments" type="xsd:string" minOccurs="0">
-										<xsd:annotation>
-											<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
-										</xsd:annotation>
-									</xsd:element>
-									<xsd:element name="AssociatedPassengers" type="xsd:string" minOccurs="0"/>
-									<xsd:element name="AssociatedReductions" type="xsd:string" minOccurs="0"/>
-									<xsd:element name="AssociatedFares" type="xsd:string" minOccurs="0"/>
-									<xsd:element name="IncludedServices" type="xsd:string" minOccurs="0"/>
-									<xsd:element name="AssociatedServices" type="xsd:string" minOccurs="0"/>
-									<xsd:element name="IncludedAccommodations" type="xsd:string" minOccurs="0"/>
-									<xsd:element name="AssociatedAccommodations" type="xsd:string" minOccurs="0"/>
-									<xsd:element name="AssociatedClassOfService" type="xsd:string" minOccurs="0">
-										<xsd:annotation>
-											<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
 										</xsd:annotation>
 									</xsd:element>
 								</xsd:sequence>
 							</xsd:complexType>
 						</xsd:element>
-						<xsd:element name="Price" minOccurs="0">
+						<xsd:element name="Price">
 							<xsd:annotation>
 								<xsd:documentation>Price including Tax, if any.</xsd:documentation>
 							</xsd:annotation>
 							<xsd:complexType>
-								<xsd:attribute name="Amount" type="xsd:positiveInteger" use="required"/>
+								<xsd:attribute name="GrossAmount" type="xsd:nonNegativeInteger" use="required"/>
 								<xsd:attribute name="Currency" type="xsd:string" use="required">
 									<xsd:annotation>
 										<xsd:documentation>ISO 4217</xsd:documentation>
@@ -240,6 +73,29 @@ Notes:
 										<xsd:documentation>ISO 4217</xsd:documentation>
 									</xsd:annotation>
 								</xsd:attribute>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="Associations" minOccurs="0" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="AssociatedSegments" type="xsd:string" minOccurs="0">
+										<xsd:annotation>
+											<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+									<xsd:element name="AssociatedPassengers" type="xsd:string" minOccurs="0"/>
+									<xsd:element name="AssociatedReductions" type="xsd:string" minOccurs="0"/>
+									<xsd:element name="AssociatedTariff" type="xsd:string" minOccurs="0"/>
+									<xsd:element name="IncludedAncillaryServices" type="xsd:string" minOccurs="0"/>
+									<xsd:element name="AssociatedAncillaryServices" type="xsd:string" minOccurs="0"/>
+									<xsd:element name="IncludedAccommodations" type="xsd:string" minOccurs="0"/>
+									<xsd:element name="AssociatedAccommodations" type="xsd:string" minOccurs="0"/>
+									<xsd:element name="AssociatedClassOfService" type="xsd:string" minOccurs="0">
+										<xsd:annotation>
+											<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+								</xsd:sequence>
 							</xsd:complexType>
 						</xsd:element>
 						<xsd:element name="Tax" minOccurs="0" maxOccurs="unbounded">
@@ -262,154 +118,24 @@ Notes:
 								</xsd:attribute>
 							</xsd:complexType>
 						</xsd:element>
-						<xsd:element name="AlternateCurrencies" minOccurs="0" maxOccurs="unbounded">
+						<xsd:element name="Fee" minOccurs="0" maxOccurs="unbounded">
 							<xsd:complexType>
+								<xsd:attribute name="Code" type="xsd:string" use="required">
+									<xsd:annotation>
+										<xsd:documentation>Type of Tax being applied. E.g. VAT.</xsd:documentation>
+									</xsd:annotation>
+								</xsd:attribute>
+								<xsd:attribute name="Amount" type="xsd:positiveInteger" use="required"/>
 								<xsd:attribute name="Currency" type="xsd:string" use="required">
 									<xsd:annotation>
 										<xsd:documentation>ISO 4217</xsd:documentation>
 									</xsd:annotation>
 								</xsd:attribute>
-								<xsd:attribute name="ConversionRate" type="xsd:string" use="required"/>
-							</xsd:complexType>
-						</xsd:element>
-						<xsd:element name="Accommodations" minOccurs="0" maxOccurs="unbounded">
-							<xsd:annotation>
-								<xsd:documentation>This eliment provides the price of the accommodation</xsd:documentation>
-							</xsd:annotation>
-							<xsd:complexType>
-								<xsd:sequence>
-									<xsd:element name="Price">
-										<xsd:annotation>
-											<xsd:documentation>Price including Tax, if any.</xsd:documentation>
-										</xsd:annotation>
-										<xsd:complexType>
-											<xsd:attribute name="Amount" type="xsd:positiveInteger" use="required"/>
-											<xsd:attribute name="Currency" type="xsd:string" use="required">
-												<xsd:annotation>
-													<xsd:documentation>ISO 4217</xsd:documentation>
-												</xsd:annotation>
-											</xsd:attribute>
-											<xsd:attribute name="DecimalPlaces" type="xsd:nonNegativeInteger" use="required">
-												<xsd:annotation>
-													<xsd:documentation>ISO 4217</xsd:documentation>
-												</xsd:annotation>
-											</xsd:attribute>
-										</xsd:complexType>
-									</xsd:element>
-									<xsd:element name="Tax" minOccurs="0" maxOccurs="unbounded">
-										<xsd:complexType>
-											<xsd:attribute name="Code" type="xsd:string" use="required">
-												<xsd:annotation>
-													<xsd:documentation>Type of Tax being applied. E.g. VAT.</xsd:documentation>
-												</xsd:annotation>
-											</xsd:attribute>
-											<xsd:attribute name="Amount" type="xsd:positiveInteger" use="required"/>
-											<xsd:attribute name="Currency" type="xsd:string" use="required">
-												<xsd:annotation>
-													<xsd:documentation>ISO 4217</xsd:documentation>
-												</xsd:annotation>
-											</xsd:attribute>
-											<xsd:attribute name="DecimalPlaces" type="xsd:nonNegativeInteger" use="required">
-												<xsd:annotation>
-													<xsd:documentation>ISO 4217</xsd:documentation>
-												</xsd:annotation>
-											</xsd:attribute>
-										</xsd:complexType>
-									</xsd:element>
-									<xsd:element name="Associations" minOccurs="0" maxOccurs="unbounded">
-										<xsd:complexType>
-											<xsd:sequence>
-												<xsd:element name="AssociatedSegments" type="xsd:string" minOccurs="0">
-													<xsd:annotation>
-														<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
-													</xsd:annotation>
-												</xsd:element>
-												<xsd:element name="AssociatedPassengers" type="xsd:string" minOccurs="0"/>
-												<xsd:element name="AssociatedReductions" type="xsd:string" minOccurs="0"/>
-												<xsd:element name="AssociatedFares" type="xsd:string" minOccurs="0"/>
-												<xsd:element name="IncludedServices" type="xsd:string" minOccurs="0"/>
-												<xsd:element name="AssociatedServices" type="xsd:string" minOccurs="0"/>
-												<xsd:element name="IncludedAccommodations" type="xsd:string" minOccurs="0"/>
-												<xsd:element name="AssociatedAccommodations" type="xsd:string" minOccurs="0"/>
-												<xsd:element name="AssociatedClassOfService" type="xsd:string" minOccurs="0">
-													<xsd:annotation>
-														<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
-													</xsd:annotation>
-												</xsd:element>
-											</xsd:sequence>
-										</xsd:complexType>
-									</xsd:element>
-								</xsd:sequence>
-							</xsd:complexType>
-						</xsd:element>
-						<xsd:element name="Services" minOccurs="0" maxOccurs="unbounded">
-							<xsd:annotation>
-								<xsd:documentation>This eliment provides the price of the service</xsd:documentation>
-							</xsd:annotation>
-							<xsd:complexType>
-								<xsd:sequence>
-									<xsd:element name="Price">
-										<xsd:annotation>
-											<xsd:documentation>Price including Tax, if any.</xsd:documentation>
-										</xsd:annotation>
-										<xsd:complexType>
-											<xsd:attribute name="Amount" type="xsd:positiveInteger" use="required"/>
-											<xsd:attribute name="Currency" type="xsd:string" use="required">
-												<xsd:annotation>
-													<xsd:documentation>ISO 4217</xsd:documentation>
-												</xsd:annotation>
-											</xsd:attribute>
-											<xsd:attribute name="DecimalPlaces" type="xsd:nonNegativeInteger" use="required">
-												<xsd:annotation>
-													<xsd:documentation>ISO 4217</xsd:documentation>
-												</xsd:annotation>
-											</xsd:attribute>
-										</xsd:complexType>
-									</xsd:element>
-									<xsd:element name="Tax" minOccurs="0" maxOccurs="unbounded">
-										<xsd:complexType>
-											<xsd:attribute name="Code" type="xsd:string" use="required">
-												<xsd:annotation>
-													<xsd:documentation>Type of Tax being applied. E.g. VAT.</xsd:documentation>
-												</xsd:annotation>
-											</xsd:attribute>
-											<xsd:attribute name="Amount" type="xsd:positiveInteger" use="required"/>
-											<xsd:attribute name="Currency" type="xsd:string" use="required">
-												<xsd:annotation>
-													<xsd:documentation>ISO 4217</xsd:documentation>
-												</xsd:annotation>
-											</xsd:attribute>
-											<xsd:attribute name="DecimalPlaces" type="xsd:nonNegativeInteger" use="required">
-												<xsd:annotation>
-													<xsd:documentation>ISO 4217</xsd:documentation>
-												</xsd:annotation>
-											</xsd:attribute>
-										</xsd:complexType>
-									</xsd:element>
-									<xsd:element name="Associations" minOccurs="0" maxOccurs="unbounded">
-										<xsd:complexType>
-											<xsd:sequence>
-												<xsd:element name="AssociatedSegments" type="xsd:string" minOccurs="0">
-													<xsd:annotation>
-														<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
-													</xsd:annotation>
-												</xsd:element>
-												<xsd:element name="AssociatedPassengers" type="xsd:string" minOccurs="0"/>
-												<xsd:element name="AssociatedReductions" type="xsd:string" minOccurs="0"/>
-												<xsd:element name="AssociatedFares" type="xsd:string" minOccurs="0"/>
-												<xsd:element name="IncludedServices" type="xsd:string" minOccurs="0"/>
-												<xsd:element name="AssociatedServices" type="xsd:string" minOccurs="0"/>
-												<xsd:element name="IncludedAccommodations" type="xsd:string" minOccurs="0"/>
-												<xsd:element name="AssociatedAccommodations" type="xsd:string" minOccurs="0"/>
-												<xsd:element name="AssociatedClassOfService" type="xsd:string" minOccurs="0">
-													<xsd:annotation>
-														<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
-													</xsd:annotation>
-												</xsd:element>
-											</xsd:sequence>
-										</xsd:complexType>
-									</xsd:element>
-								</xsd:sequence>
+								<xsd:attribute name="DecimalPlaces" type="xsd:nonNegativeInteger" use="required">
+									<xsd:annotation>
+										<xsd:documentation>ISO 4217</xsd:documentation>
+									</xsd:annotation>
+								</xsd:attribute>
 							</xsd:complexType>
 						</xsd:element>
 					</xsd:sequence>
@@ -418,60 +144,573 @@ Notes:
 							<xsd:documentation>Number of remaining Offers available</xsd:documentation>
 						</xsd:annotation>
 					</xsd:attribute>
+					<xsd:attribute name="ListKey" type="xsd:string"/>
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="TicketingOption" maxOccurs="unbounded">
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="OfferRS">
+		<xsd:annotation>
+			<xsd:documentation> </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="CarrierOffer" type="ns1:CarrierOffer" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>This element describes the Minimum Sellable Offer that can be presented to the distributor. </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Tariff" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="Code" type="xsd:string" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Product List Code. E.g. FA00</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="Name" minOccurs="0" maxOccurs="unbounded">
+								<xsd:annotation>
+									<xsd:documentation>Commercial Name of the Product. E.g TGV PRO.</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string">
+											<xsd:attribute name="Code" type="xsd:language">
+												<xsd:annotation>
+													<xsd:documentation>Language code in case several languages are supported.</xsd:documentation>
+												</xsd:annotation>
+											</xsd:attribute>
+										</xsd:extension>
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="TableName" type="xsd:string" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Link to any reference data where  more information about this fare can be found.</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="SalesConditions" maxOccurs="unbounded">
+								<xsd:annotation>
+									<xsd:documentation>After sales conditions for examples.</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string">
+											<xsd:attribute name="NetFareIndicator" type="xsd:boolean"/>
+											<xsd:attribute name="Open" type="xsd:boolean"/>
+											<xsd:attribute name="ReservationRequired" type="xsd:boolean"/>
+											<xsd:attribute name="Family" type="xsd:nonNegativeInteger">
+												<xsd:annotation>
+													<xsd:documentation>E.g. RiT </xsd:documentation>
+												</xsd:annotation>
+											</xsd:attribute>
+											<xsd:attribute name="MinPassengers" type="xsd:string">
+												<xsd:annotation>
+													<xsd:documentation xml:lang="en">The minimum number of passengers for this ticket.</xsd:documentation>
+												</xsd:annotation>
+											</xsd:attribute>
+											<xsd:attribute name="MaxPassengers" type="xsd:string">
+												<xsd:annotation>
+													<xsd:documentation xml:lang="en">The maximum number of passengers for this ticket.</xsd:documentation>
+												</xsd:annotation>
+											</xsd:attribute>
+											<xsd:attribute name="MinAdults" type="xsd:string">
+												<xsd:annotation>
+													<xsd:documentation xml:lang="en">The minimum number of adults for this ticket.</xsd:documentation>
+												</xsd:annotation>
+											</xsd:attribute>
+											<xsd:attribute name="MaxAdults" type="xsd:string">
+												<xsd:annotation>
+													<xsd:documentation xml:lang="en">The maximum number of adults for this ticket.</xsd:documentation>
+												</xsd:annotation>
+											</xsd:attribute>
+											<xsd:attribute name="MinChildren" type="xsd:string">
+												<xsd:annotation>
+													<xsd:documentation xml:lang="en">The minimum number of children for this ticket.</xsd:documentation>
+												</xsd:annotation>
+											</xsd:attribute>
+											<xsd:attribute name="MaxChildren" type="xsd:string">
+												<xsd:annotation>
+													<xsd:documentation xml:lang="en">The maximum number of children for this ticket.</xsd:documentation>
+												</xsd:annotation>
+											</xsd:attribute>
+											<xsd:attribute name="Code" type="xsd:language">
+												<xsd:annotation>
+													<xsd:documentation>Language code in case several languages are supported.</xsd:documentation>
+												</xsd:annotation>
+											</xsd:attribute>
+										</xsd:extension>
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="AfterSalesConditions" maxOccurs="unbounded">
+								<xsd:annotation>
+									<xsd:documentation>After sales conditions for examples.</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string">
+											<xsd:attribute name="Code" type="xsd:language">
+												<xsd:annotation>
+													<xsd:documentation>Language code in case several languages are supported.</xsd:documentation>
+												</xsd:annotation>
+											</xsd:attribute>
+											<xsd:attribute name="Link" type="xsd:anyURI"/>
+											<xsd:attribute name="FlexibilityCode" type="xsd:nonNegativeInteger" use="required">
+												<xsd:annotation>
+													<xsd:documentation>E.g. ER for Exchnageble and Refundable, NRNE for NotExch and NonRef.</xsd:documentation>
+												</xsd:annotation>
+											</xsd:attribute>
+										</xsd:extension>
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="TariffRules">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="Penalty" minOccurs="0">
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="Detail" minOccurs="0" maxOccurs="unbounded">
+														<xsd:complexType>
+															<xsd:sequence>
+																<xsd:element name="Type">
+																	<xsd:annotation>
+																		<xsd:documentation>PenaltyType. E.g. Refund or  Exchange</xsd:documentation>
+																	</xsd:annotation>
+																</xsd:element>
+																<xsd:element name="Application">
+																	<xsd:complexType>
+																		<xsd:attribute name="Code" type="xsd:string" use="required">
+																			<xsd:annotation>
+																				<xsd:documentation>Penalty Application Code. E.g. RED Refund Before Departure, REA Refund After Departure, etc</xsd:documentation>
+																			</xsd:annotation>
+																		</xsd:attribute>
+																	</xsd:complexType>
+																</xsd:element>
+																<xsd:element name="Amount">
+																	<xsd:annotation>
+																		<xsd:documentation>Both FlatFeeAmount and Percentage can be provided.</xsd:documentation>
+																	</xsd:annotation>
+																	<xsd:complexType>
+																		<xsd:attribute name="FlatFeeAmount" type="xsd:string">
+																			<xsd:annotation>
+																				<xsd:documentation>E.g. 5 EUR</xsd:documentation>
+																			</xsd:annotation>
+																		</xsd:attribute>
+																		<xsd:attribute name="Currency" type="xsd:string">
+																			<xsd:annotation>
+																				<xsd:documentation>ISO 4217</xsd:documentation>
+																			</xsd:annotation>
+																		</xsd:attribute>
+																		<xsd:attribute name="PercentageAmount" type="xsd:string"/>
+																	</xsd:complexType>
+																</xsd:element>
+															</xsd:sequence>
+														</xsd:complexType>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="AdvanceStay" minOccurs="0">
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="AdvancePurchase" type="xsd:string" minOccurs="0"/>
+													<xsd:element name="AdvanceTicketing" type="xsd:string" minOccurs="0"/>
+													<xsd:element name="MinimumStay" type="xsd:string" minOccurs="0"/>
+													<xsd:element name="MaximumStay" type="xsd:string" minOccurs="0"/>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="ValidityPeriod" minOccurs="0"/>
+										<xsd:element name="GeographicalScope" minOccurs="0"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+						<xsd:attribute name="ListKey" type="xsd:string"/>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="Reduction" minOccurs="0" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:attribute name="ListKey" type="xsd:string" use="required"/>
+						<xsd:attribute name="Code" type="xsd:string" use="required"/>
+						<xsd:attribute name="Description" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation>To be ompleted</xsd:documentation>
+							</xsd:annotation>
+						</xsd:attribute>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="ClassOfService" minOccurs="0" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:attribute name="ListKey" type="xsd:string" use="required"/>
+						<xsd:attribute name="Type" type="xsd:string" use="required">
+							<xsd:annotation>
+								<xsd:documentation>E.g. Seat, Couchette</xsd:documentation>
+							</xsd:annotation>
+						</xsd:attribute>
+						<xsd:attribute name="Class" type="xsd:string" use="required">
+							<xsd:annotation>
+								<xsd:documentation>E.g. First, Second, Executive</xsd:documentation>
+							</xsd:annotation>
+						</xsd:attribute>
+						<xsd:attribute name="Description" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation>First Class Seat</xsd:documentation>
+							</xsd:annotation>
+						</xsd:attribute>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="TicketingOption" minOccurs="0" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="Associations" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="AssociatedSegments" type="xsd:string" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="AssociatedPassengers" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="AssociatedReductions" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="AssociatedFares" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="IncludedServices" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="AssociatedServices" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="IncludedAccommodations" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="AssociatedAccommodations" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="AssociatedClassOfService" type="xsd:string" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+						<xsd:attribute name="TicketType" type="xsd:string"/>
+						<xsd:attribute name="RetrivialType" type="xsd:string"/>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="AncillaryService" minOccurs="0" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>This eliment provides the price of the service</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="Price">
+								<xsd:annotation>
+									<xsd:documentation>Price including Tax, if any.</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:attribute name="GrossAmount" type="xsd:nonNegativeInteger" use="required"/>
+									<xsd:attribute name="Currency" type="xsd:string" use="required">
+										<xsd:annotation>
+											<xsd:documentation>ISO 4217</xsd:documentation>
+										</xsd:annotation>
+									</xsd:attribute>
+									<xsd:attribute name="DecimalPlaces" type="xsd:nonNegativeInteger" use="required">
+										<xsd:annotation>
+											<xsd:documentation>ISO 4217</xsd:documentation>
+										</xsd:annotation>
+									</xsd:attribute>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="Tax" minOccurs="0" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:attribute name="Code" type="xsd:string" use="required">
+										<xsd:annotation>
+											<xsd:documentation>Type of Tax being applied. E.g. VAT.</xsd:documentation>
+										</xsd:annotation>
+									</xsd:attribute>
+									<xsd:attribute name="Amount" type="xsd:positiveInteger" use="required"/>
+									<xsd:attribute name="Currency" type="xsd:string" use="required">
+										<xsd:annotation>
+											<xsd:documentation>ISO 4217</xsd:documentation>
+										</xsd:annotation>
+									</xsd:attribute>
+									<xsd:attribute name="DecimalPlaces" type="xsd:nonNegativeInteger" use="required">
+										<xsd:annotation>
+											<xsd:documentation>ISO 4217</xsd:documentation>
+										</xsd:annotation>
+									</xsd:attribute>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="Associations" minOccurs="0" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="AssociatedSegments" type="xsd:string" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="AssociatedPassengers" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="AssociatedReductions" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="AssociatedTariff" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="IncludedServices" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="AssociatedServices" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="IncludedAccommodations" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="AssociatedAccommodations" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="AssociatedClassOfService" type="xsd:string" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+						<xsd:attribute name="ListKey" type="xsd:string" use="required"/>
+						<xsd:attribute name="Type" type="xsd:string"/>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="Accommodation" minOccurs="0" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>This eliment provides the price of the accommodation</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="Price">
+								<xsd:annotation>
+									<xsd:documentation>Price including Tax, if any.</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:attribute name="GrossAmount" type="xsd:nonNegativeInteger" use="required"/>
+									<xsd:attribute name="Currency" type="xsd:string" use="required">
+										<xsd:annotation>
+											<xsd:documentation>ISO 4217</xsd:documentation>
+										</xsd:annotation>
+									</xsd:attribute>
+									<xsd:attribute name="DecimalPlaces" type="xsd:nonNegativeInteger" use="required">
+										<xsd:annotation>
+											<xsd:documentation>ISO 4217</xsd:documentation>
+										</xsd:annotation>
+									</xsd:attribute>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="Tax" minOccurs="0" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:attribute name="Code" type="xsd:string" use="required">
+										<xsd:annotation>
+											<xsd:documentation>Type of Tax being applied. E.g. VAT.</xsd:documentation>
+										</xsd:annotation>
+									</xsd:attribute>
+									<xsd:attribute name="Amount" type="xsd:positiveInteger" use="required"/>
+									<xsd:attribute name="Currency" type="xsd:string" use="required">
+										<xsd:annotation>
+											<xsd:documentation>ISO 4217</xsd:documentation>
+										</xsd:annotation>
+									</xsd:attribute>
+									<xsd:attribute name="DecimalPlaces" type="xsd:nonNegativeInteger" use="required">
+										<xsd:annotation>
+											<xsd:documentation>ISO 4217</xsd:documentation>
+										</xsd:annotation>
+									</xsd:attribute>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="Associations" minOccurs="0" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="AssociatedSegments" type="xsd:string" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="AssociatedPassengers" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="AssociatedReductions" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="AssociatedTariff" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="IncludedServices" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="AssociatedServices" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="IncludedAccommodations" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="AssociatedAccommodations" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="AssociatedClassOfService" type="xsd:string" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+						<xsd:attribute name="Type" type="xsd:string"/>
+						<xsd:attribute name="ListKey" type="xsd:string" use="required"/>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="Tariff">
+		<xsd:sequence>
+			<xsd:element name="Tariff" maxOccurs="unbounded">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="Associations" maxOccurs="unbounded">
+						<xsd:element name="Code" type="xsd:string" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation>Product List Code. E.g. FA00</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="Name" minOccurs="0" maxOccurs="unbounded">
+							<xsd:annotation>
+								<xsd:documentation>Commercial Name of the Product. E.g TGV PRO.</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:extension base="xsd:string">
+										<xsd:attribute name="Code" type="xsd:language">
+											<xsd:annotation>
+												<xsd:documentation>Language code in case several languages are supported.</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+									</xsd:extension>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="TableName" type="xsd:string" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation>Link to any reference data where  more information about this fare can be found.</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="SalesConditions" maxOccurs="unbounded">
+							<xsd:annotation>
+								<xsd:documentation>After sales conditions for examples.</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:extension base="xsd:string">
+										<xsd:attribute name="NetFareIndicator" type="xsd:boolean"/>
+										<xsd:attribute name="Open" type="xsd:boolean"/>
+										<xsd:attribute name="ReservationRequired" type="xsd:boolean"/>
+										<xsd:attribute name="Family" type="xsd:nonNegativeInteger">
+											<xsd:annotation>
+												<xsd:documentation>E.g. RiT </xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+										<xsd:attribute name="MinPassengers" type="xsd:string">
+											<xsd:annotation>
+												<xsd:documentation xml:lang="en">The minimum number of passengers for this ticket.</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+										<xsd:attribute name="MaxPassengers" type="xsd:string">
+											<xsd:annotation>
+												<xsd:documentation xml:lang="en">The maximum number of passengers for this ticket.</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+										<xsd:attribute name="MinAdults" type="xsd:string">
+											<xsd:annotation>
+												<xsd:documentation xml:lang="en">The minimum number of adults for this ticket.</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+										<xsd:attribute name="MaxAdults" type="xsd:string">
+											<xsd:annotation>
+												<xsd:documentation xml:lang="en">The maximum number of adults for this ticket.</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+										<xsd:attribute name="MinChildren" type="xsd:string">
+											<xsd:annotation>
+												<xsd:documentation xml:lang="en">The minimum number of children for this ticket.</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+										<xsd:attribute name="MaxChildren" type="xsd:string">
+											<xsd:annotation>
+												<xsd:documentation xml:lang="en">The maximum number of children for this ticket.</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+										<xsd:attribute name="Code" type="xsd:language">
+											<xsd:annotation>
+												<xsd:documentation>Language code in case several languages are supported.</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+									</xsd:extension>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="AfterSalesConditions" maxOccurs="unbounded">
+							<xsd:annotation>
+								<xsd:documentation>After sales conditions for examples.</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:extension base="xsd:string">
+										<xsd:attribute name="Code" type="xsd:language">
+											<xsd:annotation>
+												<xsd:documentation>Language code in case several languages are supported.</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+										<xsd:attribute name="Link" type="xsd:anyURI"/>
+										<xsd:attribute name="FlexibilityCode" type="xsd:nonNegativeInteger" use="required">
+											<xsd:annotation>
+												<xsd:documentation>E.g. ER for Exchnageble and Refundable, NRNE for NotExch and NonRef.</xsd:documentation>
+											</xsd:annotation>
+										</xsd:attribute>
+									</xsd:extension>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="TariffRules">
 							<xsd:complexType>
 								<xsd:sequence>
-									<xsd:element name="AssociatedSegments" type="xsd:string" minOccurs="0">
-										<xsd:annotation>
-											<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
-										</xsd:annotation>
+									<xsd:element name="Penalty" minOccurs="0">
+										<xsd:complexType>
+											<xsd:sequence>
+												<xsd:element name="Detail" minOccurs="0" maxOccurs="unbounded">
+													<xsd:complexType>
+														<xsd:sequence>
+															<xsd:element name="Type">
+																<xsd:annotation>
+																	<xsd:documentation>PenaltyType. E.g. Refund or  Exchange</xsd:documentation>
+																</xsd:annotation>
+															</xsd:element>
+															<xsd:element name="Application">
+																<xsd:complexType>
+																	<xsd:attribute name="Code" type="xsd:string" use="required">
+																		<xsd:annotation>
+																			<xsd:documentation>Penalty Application Code. E.g. RED Refund Before Departure, REA Refund After Departure, etc</xsd:documentation>
+																		</xsd:annotation>
+																	</xsd:attribute>
+																</xsd:complexType>
+															</xsd:element>
+															<xsd:element name="Amount">
+																<xsd:annotation>
+																	<xsd:documentation>Both FlatFeeAmount and Percentage can be provided.</xsd:documentation>
+																</xsd:annotation>
+																<xsd:complexType>
+																	<xsd:attribute name="FlatFeeAmount" type="xsd:string">
+																		<xsd:annotation>
+																			<xsd:documentation>E.g. 5 EUR</xsd:documentation>
+																		</xsd:annotation>
+																	</xsd:attribute>
+																	<xsd:attribute name="Currency" type="xsd:string">
+																		<xsd:annotation>
+																			<xsd:documentation>ISO 4217</xsd:documentation>
+																		</xsd:annotation>
+																	</xsd:attribute>
+																	<xsd:attribute name="PercentageAmount" type="xsd:string"/>
+																</xsd:complexType>
+															</xsd:element>
+														</xsd:sequence>
+													</xsd:complexType>
+												</xsd:element>
+											</xsd:sequence>
+										</xsd:complexType>
 									</xsd:element>
-									<xsd:element name="AssociatedPassengers" type="xsd:string" minOccurs="0"/>
-									<xsd:element name="AssociatedReductions" type="xsd:string" minOccurs="0"/>
-									<xsd:element name="AssociatedFares" type="xsd:string" minOccurs="0"/>
-									<xsd:element name="IncludedServices" type="xsd:string" minOccurs="0"/>
-									<xsd:element name="AssociatedServices" type="xsd:string" minOccurs="0"/>
-									<xsd:element name="IncludedAccommodations" type="xsd:string" minOccurs="0"/>
-									<xsd:element name="AssociatedAccommodations" type="xsd:string" minOccurs="0"/>
-									<xsd:element name="AssociatedClassOfService" type="xsd:string" minOccurs="0">
-										<xsd:annotation>
-											<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
-										</xsd:annotation>
+									<xsd:element name="AdvanceStay" minOccurs="0">
+										<xsd:complexType>
+											<xsd:sequence>
+												<xsd:element name="AdvancePurchase" type="xsd:string" minOccurs="0"/>
+												<xsd:element name="AdvanceTicketing" type="xsd:string" minOccurs="0"/>
+												<xsd:element name="MinimumStay" type="xsd:string" minOccurs="0"/>
+												<xsd:element name="MaximumStay" type="xsd:string" minOccurs="0"/>
+											</xsd:sequence>
+										</xsd:complexType>
 									</xsd:element>
+									<xsd:element name="ValidityPeriod" minOccurs="0"/>
+									<xsd:element name="GeographicalScope" minOccurs="0"/>
 								</xsd:sequence>
 							</xsd:complexType>
 						</xsd:element>
 					</xsd:sequence>
-					<xsd:attribute name="TicketType" type="xsd:string"/>
-					<xsd:attribute name="RetrivialType" type="xsd:string"/>
-				</xsd:complexType>
-			</xsd:element>
-			<xsd:element name="Associations" minOccurs="0" maxOccurs="unbounded">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="AssociatedSegments" type="xsd:string" minOccurs="0">
-							<xsd:annotation>
-								<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-						<xsd:element name="AssociatedPassengers" type="xsd:string" minOccurs="0"/>
-						<xsd:element name="AssociatedReductions" type="xsd:string" minOccurs="0"/>
-						<xsd:element name="AssociatedFares" type="xsd:string" minOccurs="0"/>
-						<xsd:element name="IncludedServices" type="xsd:string" minOccurs="0"/>
-						<xsd:element name="AssociatedServices" type="xsd:string" minOccurs="0"/>
-						<xsd:element name="IncludedAccommodations" type="xsd:string" minOccurs="0"/>
-						<xsd:element name="AssociatedAccommodations" type="xsd:string" minOccurs="0"/>
-						<xsd:element name="AssociatedClassOfService" type="xsd:string" minOccurs="0">
-							<xsd:annotation>
-								<xsd:documentation>References divided by space as provided in the ListKey. E.g. PH1 PH2</xsd:documentation>
-							</xsd:annotation>
-						</xsd:element>
-					</xsd:sequence>
+					<xsd:attribute name="ListKey" type="xsd:string"/>
 				</xsd:complexType>
 			</xsd:element>
 		</xsd:sequence>
