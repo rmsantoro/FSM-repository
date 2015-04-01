@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://domainmodel.pts-fsm/Offering.Connection" xmlns:tns="http://domainmodel.pts-fsm/Offering.Connection" xmlns:q1="http://domainmodel.pts-fsm/Offering.Infrastructure" xmlns:q2="http://domainmodel.pts-fsm/Offering.Transportation">
+  <xs:import namespace="http://domainmodel.pts-fsm/Offering.Transportation" schemaLocation="Offering.Transportation.xsd" />
+  <xs:import namespace="http://domainmodel.pts-fsm/Offering.Infrastructure" schemaLocation="Offering.Infrastructure.xsd" />
+  <xs:complexType name="ArrayOfChangePoint">
+    <xs:sequence>
+      <xs:element name="ChangePoint" type="tns:ChangePoint" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfChangePoint" type="tns:ArrayOfChangePoint" nillable="true" />
+  <xs:complexType name="ChangePoint">
+    <xs:sequence>
+      <xs:element name="ChangePointID" type="xs:int" nillable="true" minOccurs="0" />
+      <xs:element name="ConnectionTime" type="tns:ArrayOfConnectionTime" nillable="true" minOccurs="0" />
+      <xs:element name="LinkPathList" type="tns:ArrayOfLinkPath" nillable="true" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="Id" type="xs:ID" />
+    <xs:attribute name="Ref" type="xs:IDREF" />
+    <xs:attribute name="StopPlaceName" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="ChangePoint" type="tns:ChangePoint" nillable="true" />
+  <xs:complexType name="ArrayOfConnectionTime">
+    <xs:sequence>
+      <xs:element name="ConnectionTime" type="tns:ConnectionTime" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfConnectionTime" type="tns:ArrayOfConnectionTime" nillable="true" />
+  <xs:complexType name="ConnectionTime">
+    <xs:sequence>
+      <xs:element name="ExperiencedOverallChangeTime" type="xs:dateTime" nillable="true" minOccurs="0" />
+      <xs:element name="ImpairedOverallChangeTime" type="xs:dateTime" nillable="true" minOccurs="0" />
+      <xs:element name="WheelchairOverallChangeTime" type="xs:dateTime" nillable="true" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="Id" type="xs:ID" />
+    <xs:attribute name="Ref" type="xs:IDREF" />
+    <xs:attribute name="MeanOverallChangeTime" type="xs:dateTime" />
+  </xs:complexType>
+  <xs:element name="ConnectionTime" type="tns:ConnectionTime" nillable="true" />
+  <xs:complexType name="ArrayOfLinkPath">
+    <xs:sequence>
+      <xs:element name="LinkPath" type="tns:LinkPath" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfLinkPath" type="tns:ArrayOfLinkPath" nillable="true" />
+  <xs:complexType name="LinkPath">
+    <xs:sequence>
+      <xs:element name="WaitingTimeTypeID" type="xs:int" nillable="true" minOccurs="0" />
+      <xs:element name="MobilityAidTypeID" type="xs:int" nillable="true" minOccurs="0" />
+      <xs:element name="ConnectionTime" type="tns:ArrayOfConnectionTime" nillable="true" minOccurs="0" />
+      <xs:element name="NavigationPointList" type="tns:ArrayOfNavigationPoint" nillable="true" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="Id" type="xs:ID" />
+    <xs:attribute name="Ref" type="xs:IDREF" />
+    <xs:attribute name="PathLinkTypeID" type="xs:int" />
+    <xs:attribute name="PedestrianPaceID" type="xs:int" />
+    <xs:attribute name="AidBookable" type="xs:boolean" />
+  </xs:complexType>
+  <xs:element name="LinkPath" type="tns:LinkPath" nillable="true" />
+  <xs:complexType name="ArrayOfNavigationPoint">
+    <xs:sequence>
+      <xs:element name="NavigationPoint" type="tns:NavigationPoint" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfNavigationPoint" type="tns:ArrayOfNavigationPoint" nillable="true" />
+  <xs:complexType name="NavigationPoint">
+    <xs:sequence>
+      <xs:element name="FootpathEquipmentID" type="xs:int" nillable="true" minOccurs="0" />
+      <xs:element name="AccessEquipmentID" type="xs:int" nillable="true" minOccurs="0" />
+      <xs:element name="SafetyEquipmentID" type="xs:int" nillable="true" minOccurs="0" />
+      <xs:element name="ScheduledStopPoint" type="q1:ArrayOfScheduledStopPoint" nillable="true" minOccurs="0" />
+      <xs:element name="VehicleEntrance" type="q2:ArrayOfVehicleEntrance" nillable="true" minOccurs="0" />
+      <xs:element name="VehicleAccess" type="q1:ArrayOfVehicleAccess" nillable="true" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="Id" type="xs:ID" />
+    <xs:attribute name="Ref" type="xs:IDREF" />
+  </xs:complexType>
+  <xs:element name="NavigationPoint" type="tns:NavigationPoint" nillable="true" />
+</xs:schema>

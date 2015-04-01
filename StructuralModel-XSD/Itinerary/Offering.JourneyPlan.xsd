@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://domainmodel.pts-fsm/Offering.JourneyPlan" xmlns:tns="http://domainmodel.pts-fsm/Offering.JourneyPlan" xmlns:q1="http://domainmodel.pts-fsm/Offering.Offer" xmlns:q2="http://domainmodel.pts-fsm/Offering.Infrastructure" xmlns:q3="http://domainmodel.pts-fsm/Offering.Connection" xmlns:q4="http://domainmodel.pts-fsm/Offering.Transportation" xmlns:ser="http://schemas.Serialization">
+  <xs:import namespace="http://schemas.Serialization" schemaLocation="schemas.Serialization.xsd" />
+  <xs:import namespace="http://domainmodel.pts-fsm/Offering.Transportation" schemaLocation="Offering.Transportation.xsd" />
+  <xs:import namespace="http://domainmodel.pts-fsm/Offering.Connection" schemaLocation="Offering.Connection.xsd" />
+  <xs:import namespace="http://domainmodel.pts-fsm/Offering.Infrastructure" schemaLocation="Offering.Infrastructure.xsd" />
+  <xs:import namespace="http://domainmodel.pts-fsm/Offering.Offer" schemaLocation="Offering.Offer.xsd" />
+  <xs:complexType name="ArrayOfItinerary">
+    <xs:sequence>
+      <xs:element name="Itinerary" type="tns:Itinerary" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfItinerary" type="tns:ArrayOfItinerary" nillable="true" />
+  <xs:complexType name="Itinerary">
+    <xs:sequence>
+      <xs:element name="ServiceTypeID" type="xs:int" nillable="true" minOccurs="0" />
+      <xs:element name="SegmentList" type="tns:ArrayOfSegment" nillable="true" minOccurs="0" />
+      <xs:element name="CarrierOfferList" type="q1:ArrayOfCarrierOffer" nillable="true" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="Id" type="xs:ID" />
+    <xs:attribute name="Ref" type="xs:IDREF" />
+    <xs:attribute name="ID" type="ser:guid" />
+  </xs:complexType>
+  <xs:element name="Itinerary" type="tns:Itinerary" nillable="true" />
+  <xs:complexType name="ArrayOfSegment">
+    <xs:sequence>
+      <xs:element name="Segment" type="tns:Segment" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSegment" type="tns:ArrayOfSegment" nillable="true" />
+  <xs:complexType name="Segment">
+    <xs:sequence>
+      <xs:element name="ServiceModeID" type="xs:int" nillable="true" minOccurs="0" />
+      <xs:element name="RouteTypeID" type="xs:int" nillable="true" minOccurs="0" />
+      <xs:element name="TrainPathTypeID" type="xs:int" nillable="true" minOccurs="0" />
+      <xs:element name="ServiceAvailabilityID" type="xs:int" nillable="true" minOccurs="0" />
+      <xs:element name="StopPlaceList" type="q2:ArrayOfStopPlace" nillable="true" minOccurs="0" />
+      <xs:element name="Connection" type="q3:ArrayOfChangePoint" nillable="true" minOccurs="0" />
+      <xs:element name="VehicleList" type="q4:ArrayOfVehicle" nillable="true" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="Id" type="xs:ID" />
+    <xs:attribute name="Ref" type="xs:IDREF" />
+    <xs:attribute name="ID" type="xs:int" />
+  </xs:complexType>
+  <xs:element name="Segment" type="tns:Segment" nillable="true" />
+</xs:schema>

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://domainmodel.pts-fsm/Offering.Transportation" xmlns:tns="http://domainmodel.pts-fsm/Offering.Transportation" xmlns:ser="http://schemas.Serialization">
+  <xs:import namespace="http://schemas.Serialization" schemaLocation="schemas.Serialization.xsd" />
+  <xs:complexType name="ArrayOfVehicle">
+    <xs:sequence>
+      <xs:element name="Vehicle" type="tns:Vehicle" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfVehicle" type="tns:ArrayOfVehicle" nillable="true" />
+  <xs:complexType name="Vehicle">
+    <xs:sequence>
+      <xs:element name="ServiceBrandID" type="xs:int" nillable="true" minOccurs="0" />
+      <xs:element name="CoachList" type="tns:ArrayOfCoach" nillable="true" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="Id" type="xs:ID" />
+    <xs:attribute name="Ref" type="xs:IDREF" />
+    <xs:attribute name="VehicleID" type="xs:string" />
+    <xs:attribute name="ExternalID" type="xs:string" />
+    <xs:attribute name="TypeID" type="xs:int" />
+  </xs:complexType>
+  <xs:element name="Vehicle" type="tns:Vehicle" nillable="true" />
+  <xs:complexType name="ArrayOfCoach">
+    <xs:sequence>
+      <xs:element name="Coach" type="tns:Coach" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCoach" type="tns:ArrayOfCoach" nillable="true" />
+  <xs:complexType name="Coach">
+    <xs:sequence>
+      <xs:element name="QualityAttributeID" type="ser:ArrayOfint" nillable="true" minOccurs="0" />
+      <xs:element name="CompartmentTypeID" type="ser:ArrayOfint" nillable="true" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="Id" type="xs:ID" />
+    <xs:attribute name="Ref" type="xs:IDREF" />
+    <xs:attribute name="ID" type="xs:string" />
+    <xs:attribute name="CoachTypeID" type="xs:int" />
+  </xs:complexType>
+  <xs:element name="Coach" type="tns:Coach" nillable="true" />
+  <xs:complexType name="ArrayOfCompartment">
+    <xs:sequence>
+      <xs:element name="Compartment" type="tns:Compartment" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCompartment" type="tns:ArrayOfCompartment" nillable="true" />
+  <xs:complexType name="Compartment">
+  </xs:complexType>
+  <xs:element name="Compartment" type="tns:Compartment" nillable="true" />
+</xs:schema>

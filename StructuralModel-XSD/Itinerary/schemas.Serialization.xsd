@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://schemas.Serialization" xmlns:tns="http://schemas.Serialization">
+  <xs:complexType name="ArrayOfGuid">
+    <xs:sequence>
+      <xs:element name="Guid" type="tns:guid" nillable="false" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfGuid" type="tns:ArrayOfGuid" nillable="false" />
+  <xs:complexType name="ArrayOfint">
+    <xs:sequence>
+      <xs:element name="int" type="xs:int" nillable="false" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfint" type="tns:ArrayOfint" nillable="false" />
+  <xs:complexType name="ArrayOfstring">
+    <xs:sequence>
+      <xs:element name="string" type="xs:string" nillable="false" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfstring" type="tns:ArrayOfstring" nillable="false" />
+  <xs:complexType name="ArrayOfDateTime">
+    <xs:sequence>
+      <xs:element name="DateTime" type="xs:dateTime" nillable="false" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDateTime" type="tns:ArrayOfDateTime" nillable="false" />
+  <xs:complexType name="ArrayOfintNullable">
+    <xs:sequence>
+      <xs:element name="intNullable" type="xs:int" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfintNullable" type="tns:ArrayOfintNullable" nillable="true" />
+  <xs:element name="guid" nillable="true" type="tns:guid" />
+  <xs:simpleType name="guid">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

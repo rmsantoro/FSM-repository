@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://domainmodel.pts-fsm/Offering.Infrastructure" xmlns:tns="http://domainmodel.pts-fsm/Offering.Infrastructure" xmlns:q1="http://domainmodel.pts-fsm/Offering.Common">
+  <xs:complexType name="ArrayOfVehicleAccess">
+    <xs:sequence>
+      <xs:element name="VehicleAccess" type="tns:VehicleAccess" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfVehicleAccess" type="tns:ArrayOfVehicleAccess" nillable="true" />
+  <xs:complexType name="VehicleAccess">
+    <xs:sequence>
+      <xs:element name="BoardingPosition" type="tns:ArrayOfBoardingPosition" nillable="true" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="Id" type="xs:ID" />
+    <xs:attribute name="Ref" type="xs:IDREF" />
+    <xs:attribute name="VehicleAccessAreaID" type="xs:int" />
+    <xs:attribute name="Name" type="xs:string" />
+    <xs:attribute name="VehicleAccessAreaTypeID" type="xs:int" />
+  </xs:complexType>
+  <xs:element name="VehicleAccess" type="tns:VehicleAccess" nillable="true" />
+  <xs:complexType name="ArrayOfScheduledStopPoint">
+    <xs:sequence>
+      <xs:element name="ScheduledStopPoint" type="tns:ScheduledStopPoint" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfScheduledStopPoint" type="tns:ArrayOfScheduledStopPoint" nillable="true" />
+  <xs:complexType name="ScheduledStopPoint">
+    <xs:sequence>
+      <xs:element name="CheckInTime" type="xs:dateTime" nillable="true" minOccurs="0" />
+      <xs:element name="EffectiveDeparture" type="xs:dateTime" nillable="true" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="Id" type="xs:ID" />
+    <xs:attribute name="Ref" type="xs:IDREF" />
+    <xs:attribute name="VehicleStoppingPointID" type="xs:int" />
+    <xs:attribute name="ArrivalTime" type="xs:dateTime" />
+    <xs:attribute name="CloseOfBoarding" type="xs:dateTime" />
+  </xs:complexType>
+  <xs:element name="ScheduledStopPoint" type="tns:ScheduledStopPoint" nillable="true" />
+  <xs:complexType name="ArrayOfStopPlace">
+    <xs:sequence>
+      <xs:element name="StopPlace" type="tns:StopPlace" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfStopPlace" type="tns:ArrayOfStopPlace" nillable="true" />
+  <xs:complexType name="StopPlace">
+    <xs:sequence>
+      <xs:element name="ScheduledStopPoint" type="tns:ArrayOfScheduledStopPoint" nillable="true" minOccurs="0" />
+      <xs:element name="StopArea" type="tns:ArrayOfStopArea" nillable="true" minOccurs="0" />
+      <xs:element name="VehicleAccess" type="tns:ArrayOfVehicleAccess" nillable="true" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="Id" type="xs:ID" />
+    <xs:attribute name="Ref" type="xs:IDREF" />
+    <xs:attribute name="StopPlaceID" type="xs:int" />
+    <xs:attribute name="StopPlaceTypeID" type="xs:int" />
+    <xs:attribute name="ExternalID" type="xs:string" />
+    <xs:attribute name="Name" type="xs:string" />
+    <xs:attribute name="Acronym" type="xs:string" />
+    <xs:attribute name="IsBorderPoint" type="xs:boolean" />
+    <xs:attribute name="BorderPointCode" type="xs:string" />
+    <xs:attribute name="Description" type="xs:string" />
+    <xs:attribute name="StopPlaceAccessTypeID" type="xs:int" />
+  </xs:complexType>
+  <xs:element name="StopPlace" type="tns:StopPlace" nillable="true" />
+  <xs:complexType name="Location">
+    <xs:attribute name="Id" type="xs:ID" />
+    <xs:attribute name="Ref" type="xs:IDREF" />
+    <xs:attribute name="LocationID" type="xs:long" />
+    <xs:attribute name="ExternalID" type="xs:string" />
+    <xs:attribute name="Name" type="xs:string" />
+    <xs:attribute name="Acronym" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="Location" type="tns:Location" nillable="true" />
+  <xs:complexType name="ArrayOfStopArea">
+    <xs:sequence>
+      <xs:element name="StopArea" type="tns:StopArea" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfStopArea" type="tns:ArrayOfStopArea" nillable="true" />
+  <xs:complexType name="StopArea">
+    <xs:sequence>
+      <xs:element name="VehicleAccess" type="tns:ArrayOfVehicleAccess" nillable="true" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="Id" type="xs:ID" />
+    <xs:attribute name="Ref" type="xs:IDREF" />
+    <xs:attribute name="StopAreaID" type="xs:int" />
+  </xs:complexType>
+  <xs:element name="StopArea" type="tns:StopArea" nillable="true" />
+  <xs:complexType name="ArrayOfBoardingPosition">
+    <xs:sequence>
+      <xs:element name="BoardingPosition" type="tns:BoardingPosition" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBoardingPosition" type="tns:ArrayOfBoardingPosition" nillable="true" />
+  <xs:complexType name="BoardingPosition">
+    <xs:sequence>
+      <xs:element name="TypeOfBoardingPositionID" type="xs:int" nillable="true" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="Id" type="xs:ID" />
+    <xs:attribute name="Ref" type="xs:IDREF" />
+    <xs:attribute name="BoardingPositionID" type="xs:int" />
+    <xs:attribute name="Height" type="xs:string" />
+    <xs:attribute name="Displacement" type="xs:string" />
+    <xs:attribute name="PRMSuitable" type="xs:boolean" />
+    <xs:attribute name="VehicleRampSuitable" type="xs:boolean" />
+  </xs:complexType>
+  <xs:element name="BoardingPosition" type="tns:BoardingPosition" nillable="true" />
+</xs:schema>
